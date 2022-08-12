@@ -1,0 +1,33 @@
+<!doctype html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            function fetchdata(){
+                $.ajax({
+                    url: '/status/{{ uid }}',
+                    type: 'get',
+                    success: function(data) {
+                        if(data.status === "complete") {
+                            $("#result").html(data.result);
+                        } else {
+                            setTimeout(fetchdata, 1000);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.status + ': ' + xhr.statusText
+                        alert('Error!! ' + errorMessage);
+                    }
+                });
+            }
+
+            $(document).ready(function(){
+                setTimeout(fetchdata, 1000);
+            });
+        </script>
+    </head>
+    <body>
+    <h1>Job {{ uid }}</h1>
+    <div id="result">
+        Please wait, result will soon be ready...
+    </div>
+    </body>
